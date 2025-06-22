@@ -1,6 +1,6 @@
-# Arabic Video Summarization
+# Arabic Video Summarisation
 
-A multimodal pipeline for summarizing Arabic news videos using ASR, object detection, and NLP.
+A multimodal pipeline for summarising Arabic news videos using ASR, object detection, and NLP.
 
 ## Structure
 - `notebooks/`: Interactive development
