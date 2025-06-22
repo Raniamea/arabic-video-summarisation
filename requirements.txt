@@ -1,0 +1,11 @@
+torch
+transformers
+whisper
+sentence-transformers
+scenedetect[opencv]
+ultralytics
+django
+matplotlib
+scikit-learn
+rouge-score
+bert-score
