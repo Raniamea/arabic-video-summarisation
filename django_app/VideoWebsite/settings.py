@@ -127,3 +127,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media file (uploads) handling
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/content/drive/MyDrive/arabic-video-summarisation/videos'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.app',
+]
