@@ -1,7 +1,11 @@
 import os
 import json
+from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UploadForm
+
+def home(request):
+    return HttpResponse("✅ Arabic Video Summarization App is running.")
 
 def upload_video(request):
     uploaded = False
