@@ -4,7 +4,8 @@ import subprocess
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UploadForm
-
+import papermill as pm
+from django.http import HttpResponse
 
 
 import os
@@ -56,13 +57,30 @@ def upload_video(request):
 
 def transcribe(request):
     try:
-        result = subprocess.run(
-            ['python3', '/content/arabic-video-summarisation/scripts/transcribe.py'],
-            capture_output=True,
-            text=True,
-            check=True
+        pm.execute_notebook(
+            '/content/arabic-video-summarisation/notebooks/01_transcribe.ipynb',
+            '/content/arabic-video-summarisation/notebooks/out_transcribe.ipynb'
         )
-        return HttpResponse(f"<h2>✅ Transcription Completed</h2><pre>{result.stdout}</pre>")
-    except subprocess.CalledProcessError as e:
-        return HttpResponse(f"<h2>❌ Error Running Script</h2><pre>{e.stderr}</pre>")
+        return HttpResponse("<h2>✅ Transcription notebook completed</h2>")
+    except Exception as e:
+        return HttpResponse(f"<h2>❌ Error in transcription</h2><pre>{str(e)}</pre>")
 
+def scene_detect(request):
+    try:
+        pm.execute_notebook(
+            '/content/arabic-video-summarisation/notebooks/02_object_detection.ipynb',
+            '/content/arabic-video-summarisation/notebooks/out_object_detection.ipynb'
+        )
+        return HttpResponse("<h2>✅ Scene detection notebook completed</h2>")
+    except Exception as e:
+        return HttpResponse(f"<h2>❌ Error in scene detection</h2><pre>{str(e)}</pre>")
+
+def summarize(request):
+    try:
+        pm.execute_notebook(
+            '/content/arabic-video-summarisation/notebooks/03_summarize_validate.ipynb',
+            '/content/arabic-video-summarisation/notebooks/out_summarize_validate.ipynb'
+        )
+        return HttpResponse("<h2>✅ Summarization notebook completed</h2>")
+    except Exception as e:
+        return HttpResponse(f"<h2>❌ Error in summarization</h2><pre>{str(e)}</pre>")
