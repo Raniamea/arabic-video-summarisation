@@ -1,8 +1,11 @@
 import os
 import json
+import subprocess
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UploadForm
+
+
 
 import os
 from google.colab import drive
@@ -48,3 +51,18 @@ def upload_video(request):
         'uploaded': uploaded,
         'file_name': file_name
     })
+
+
+
+def transcribe(request):
+    try:
+        result = subprocess.run(
+            ['python3', '/content/arabic-video-summarisation/scripts/transcribe.py'],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return HttpResponse(f"<h2>✅ Transcription Completed</h2><pre>{result.stdout}</pre>")
+    except subprocess.CalledProcessError as e:
+        return HttpResponse(f"<h2>❌ Error Running Script</h2><pre>{e.stderr}</pre>")
+
