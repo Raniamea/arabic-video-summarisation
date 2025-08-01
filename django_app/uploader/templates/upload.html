@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arabic Video Uploader</title>
+</head>
+<body>
+    <h1>Upload Arabic Video</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+
+    {% if uploaded %}
+        <h3>✅ Upload Successful!</h3>
+        <p>File: <strong>{{ file_name }}</strong> saved to Google Drive.</p>
+
+        <h4>➡️ Run Processing Notebooks:</h4>
+        <ul>
+            <li><a href="https://colab.research.google.com/github/Raniamea/arabic-video-summarisation/blob/main/notebooks/01_transcription.ipynb" target="_blank">🔊 Transcription (Whisper)</a></li>
+            <li><a href="https://colab.research.google.com/github/Raniamea/arabic-video-summarisation/blob/main/notebooks/02_object_detection.ipynb" target="_blank">🎞️ Scene Detection</a></li>
+            <li><a href="https://colab.research.google.com/github/Raniamea/arabic-video-summarisation/blob/main/notebooks/03_validation.ipynb" target="_blank">🧠 Semantic Validation</a></li>
+        </ul>
+    {% endif %}
+</body>
+</html>
