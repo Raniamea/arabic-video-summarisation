@@ -7,21 +7,6 @@ Original file is located at
     https://colab.research.google.com/github/Raniamea/arabic-video-summarisation/blob/main/notebooks/01_transcription.ipynb
 """
 
-# Uninstall all conflicting packages
-!pip uninstall -y torch torchaudio torchsummary torchtune torchdata torchao sentence-transformers torchvision whisper transformers tokenizers camel-tools camel-kenlm openai-whisper opencv-python opencv-contrib-python scenedetect numpy opencv-python-headless
-
-import sys
-!echo "Python version: $(python --version)"
-!pip list | grep -E 'torch|numpy|transformers|whisper|camel|opencv|scene'
-
-# Install Whisper and Torch
-!pip install -q git+https://github.com/openai/whisper.git
-!pip install -q torch torchaudio --index-url https://download.pytorch.org/whl/cu118
-
-# Mount Google Drive
-from google.colab import drive
-drive.mount('/content/drive')
-
 import json
 import os
 
