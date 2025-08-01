@@ -66,6 +66,9 @@ TEMPLATES = [
     },
 ]
 
+import os
+TEMPLATES[0]['DIRS'] = [os.path.join(BASE_DIR, 'uploader/templates')]
+
 WSGI_APPLICATION = 'VideoWebsite.wsgi.application'
 
 
