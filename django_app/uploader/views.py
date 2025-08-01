@@ -4,12 +4,19 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UploadForm
 
+import os
+from google.colab import drive
+
 def home(request):
-    return HttpResponse("✅ Arabic Video Summarization App is running.")
+    return HttpResponse("Arabic Video Summarization App is running.")
 
 def upload_video(request):
     uploaded = False
     file_name = ""
+
+    # Mount Google Drive if not mounted
+    if not os.path.exists("/content/drive/MyDrive"):
+        drive.mount('/content/drive')
     
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
