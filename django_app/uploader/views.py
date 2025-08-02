@@ -100,7 +100,7 @@ def transcribe(request):
     try:
         result = subprocess.run([
             '/content/env_caption/bin/python',
-            '/content/arabic-video-summarisation/scripts/03_generateCaption.py'
+            '/content/arabic-video-summarisation/scripts/03_generateCaptions.py'
         ], capture_output=True, text=True)
 
         if result.returncode == 0:
