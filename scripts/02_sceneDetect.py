@@ -6,13 +6,24 @@
 # In[ ]:
 
 
-import os
+import os, torch, cv2, json
+from PIL import Image
+from scenedetect import open_video, SceneManager
+from scenedetect import VideoManager, SceneManager
+from scenedetect.detectors import ContentDetector
+from transformers import AutoProcessor, Blip2ForConditionalGeneration
+from transformers import MarianMTModel, MarianTokenizer
 
-# Unmount first
+# Path to your params.json on Google Drive
+param_path = "/content/drive/MyDrive/ArabicVideoSummariser/params.json"
 
-# Delete the mount folder entirely
+# Load it
+with open(param_path, "r") as f:
+    params = json.load(f)
 
-# Now mount again
+# Get the filename
+video_filename = params.get("video_file")
+print("🎥 Transcribing video file:", video_filename)
 
 
 # In[ ]:
@@ -33,14 +44,6 @@ captions_json_path = os.path.join(captions_path, f"{video_name}.json")
 
 # In[ ]:
 
-
-import os, torch, cv2, json
-from PIL import Image
-from scenedetect import open_video, SceneManager
-from scenedetect import VideoManager, SceneManager
-from scenedetect.detectors import ContentDetector
-from transformers import AutoProcessor, Blip2ForConditionalGeneration
-from transformers import MarianMTModel, MarianTokenizer
 
 # ============ SETUP ============
 device = "cuda" if torch.cuda.is_available() else "cpu"
