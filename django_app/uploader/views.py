@@ -4,12 +4,11 @@ import subprocess
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UploadForm
-import papermill as pm
 from django.http import HttpResponse
-
-
 import os
 from google.colab import drive
+
+
 
 def home(request):
     return HttpResponse("Arabic Video Summarization App is running.")
@@ -53,50 +52,70 @@ def upload_video(request):
         'file_name': file_name
     })
 
+
 def transcribe(request):
     try:
-        pm.execute_notebook(
-            '/content/arabic-video-summarisation/notebooks/01_transcribe.ipynb',
-            '/content/arabic-video-summarisation/notebooks/out_transcribe.ipynb'
-        )
+        result = subprocess.run([
+            '/content/env_transcribe/bin/jupyter', 'nbconvert',
+            '--to', 'notebook',
+            '--execute',
+            '--inplace',
+            '/content/arabic-video-summarisation/notebooks/01_transcribe.ipynb'
+        ], capture_output=True, text=True)
 
-        # Get host dynamically from the request object
-        base_url = request.build_absolute_uri('/')[:-1]  # Remove trailing slash
-        scene_detect_url = f"{base_url}/sceneDetect"
-
-        html = f"""
-        <h2>✅ Transcription completed</h2>
-        <p>Next step:</p>
-        <ul>
-            <li><a href="{scene_detect_url}" target="_blank">📸 Run Scene Detection (Backend)</a></li>
-        </ul>
-        """
-        return HttpResponse(html)
+        if result.returncode == 0:
+            base_url = request.build_absolute_uri('/')[:-1]
+            next_url = f"{base_url}/sceneDetect"
+            return HttpResponse(f"""
+                <h2>✅ Transcription completed</h2>
+                <p>Next step:</p>
+                <ul><li><a href="{next_url}" target="_blank">📸 Run Scene Detection</a></li></ul>
+            """)
+        else:
+            return HttpResponse(f"<h2>❌ Error</h2><pre>{result.stderr}</pre>")
 
     except Exception as e:
-        return HttpResponse(f"<h2>❌ Error in transcription</h2><pre>{str(e)}</pre>")
-
+        return HttpResponse(f"<h2>❌ Transcribe Exception</h2><pre>{str(e)}</pre>")
 
 def sceneDetect(request):
     try:
-        pm.execute_notebook(
-            '/content/arabic-video-summarisation/notebooks/02_sceneDetect.ipynb',
-            '/content/arabic-video-summarisation/notebooks/out_sceneDetect.ipynb'
-        )
+        result = subprocess.run([
+            '/content/env_scene/bin/jupyter', 'nbconvert',
+            '--to', 'notebook',
+            '--execute',
+            '--inplace',
+            '/content/arabic-video-summarisation/notebooks/02_sceneDetect.ipynb'
+        ], capture_output=True, text=True)
 
-        # Build dynamic URL for the next step
-        base_url = request.build_absolute_uri('/')[:-1]
-        generate_captions_url = f"{base_url}/generateCaptions"
-
-        html = f"""
-        <h2>✅ Scene Detection completed</h2>
-        <p>Next step:</p>
-        <ul>
-            <li><a href="{generate_captions_url}" target="_blank">📝 Run Generate Captions (Backend)</a></li>
-        </ul>
-        """
-        return HttpResponse(html)
+        if result.returncode == 0:
+            base_url = request.build_absolute_uri('/')[:-1]
+            next_url = f"{base_url}/generateCaptions"
+            return HttpResponse(f"""
+                <h2>✅ Scene Detection completed</h2>
+                <p>Next step:</p>
+                <ul><li><a href="{next_url}" target="_blank">📝 Run Caption Generation</a></li></ul>
+            """)
+        else:
+            return HttpResponse(f"<h2>❌ Error</h2><pre>{result.stderr}</pre>")
 
     except Exception as e:
-        return HttpResponse(f"<h2>❌ Error in sceneDetection</h2><pre>{str(e)}</pre>")
+        return HttpResponse(f"<h2>❌ SceneDetect Exception</h2><pre>{str(e)}</pre>")
 
+
+def generateCaptions(request):
+    try:
+        result = subprocess.run([
+            '/content/env_caption/bin/jupyter', 'nbconvert',
+            '--to', 'notebook',
+            '--execute',
+            '--inplace',
+            '/content/arabic-video-summarisation/notebooks/03_generateCaptions.ipynb'
+        ], capture_output=True, text=True)
+
+        if result.returncode == 0:
+            return HttpResponse("<h2>✅ Caption Generation completed</h2>")
+        else:
+            return HttpResponse(f"<h2>❌ Error</h2><pre>{result.stderr}</pre>")
+
+    except Exception as e:
+        return HttpResponse(f"<h2>❌ GenerateCaptions Exception</h2><pre>{str(e)}</pre>")
