@@ -60,6 +60,7 @@ def transcribe(request):
             '--to', 'notebook',
             '--execute',
             '--inplace',
+            '--ExecutePreprocessor.kernel_name=env_transcribe',  
             '/content/arabic-video-summarisation/notebooks/01_transcribe.ipynb'
         ], capture_output=True, text=True)
 
@@ -84,6 +85,7 @@ def sceneDetect(request):
             '--to', 'notebook',
             '--execute',
             '--inplace',
+            '--ExecutePreprocessor.kernel_name=env_scene',  
             '/content/arabic-video-summarisation/notebooks/02_sceneDetect.ipynb'
         ], capture_output=True, text=True)
 
@@ -109,6 +111,7 @@ def generateCaptions(request):
             '--to', 'notebook',
             '--execute',
             '--inplace',
+            '--ExecutePreprocessor.kernel_name=env_caption',  
             '/content/arabic-video-summarisation/notebooks/03_generateCaptions.ipynb'
         ], capture_output=True, text=True)
 
