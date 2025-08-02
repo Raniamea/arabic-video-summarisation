@@ -6,6 +6,8 @@
 # In[ ]:
 
 
+#!apt-get install ffmpeg
+#!pip install -q pydub
 
 
 # In[ ]:
@@ -13,12 +15,6 @@
 
 import json
 import os
-
-# Unmount first
-
-# Delete the mount folder entirely
-
-# Now mount again
 
 # Path to your params.json on Google Drive
 param_path = "/content/drive/MyDrive/ArabicVideoSummariser/params.json"
@@ -46,7 +42,8 @@ trascription_json_path = os.path.join(transcripts_path, f"{video_name}_ar.json")
 
 # Convert video to audio
 audio_path = os.path.join(videos_path, f"{video_name}.wav")
-get_ipython().system('ffmpeg -y -i "{video_path}" -ar 16000 -ac 1 "{audio_path}"  # Resample to 16kHz mono')
+import subprocess
+subprocess.run(['ffmpeg', '-y', '-i', video_path, '-ar', '16000', '-ac', '1', audio_path], check=True)
 
 # Load audio using pydub
 audio = AudioSegment.from_wav(audio_path)
