@@ -56,12 +56,8 @@ def upload_video(request):
 def transcribe(request):
     try:
         result = subprocess.run([
-            '/content/env_transcribe/bin/jupyter', 'nbconvert',
-            '--to', 'notebook',
-            '--execute',
-            '--inplace',
-            '--ExecutePreprocessor.kernel_name=env_transcribe',  
-            '/content/arabic-video-summarisation/notebooks/01_transcribe.ipynb'
+            '/content/env_transcribe/bin/python',
+            '/content/arabic-video-summarisation/scripts/01_transcribe.py'
         ], capture_output=True, text=True)
 
         if result.returncode == 0:
@@ -81,44 +77,38 @@ def transcribe(request):
 def sceneDetect(request):
     try:
         result = subprocess.run([
-            '/content/env_scene/bin/jupyter', 'nbconvert',
-            '--to', 'notebook',
-            '--execute',
-            '--inplace',
-            '--ExecutePreprocessor.kernel_name=env_scene',  
-            '/content/arabic-video-summarisation/notebooks/02_sceneDetect.ipynb'
+            '/content/env_scene/bin/python',
+            '/content/arabic-video-summarisation/scripts/02_sceneDetect.py'
         ], capture_output=True, text=True)
 
         if result.returncode == 0:
             base_url = request.build_absolute_uri('/')[:-1]
             next_url = f"{base_url}/generateCaptions"
             return HttpResponse(f"""
-                <h2>✅ Scene Detection completed</h2>
+                <h2>✅ Transcription completed</h2>
                 <p>Next step:</p>
-                <ul><li><a href="{next_url}" target="_blank">📝 Run Caption Generation</a></li></ul>
+                <ul><li><a href="{next_url}" target="_blank">GenerateCaptions</a></li></ul>
             """)
         else:
             return HttpResponse(f"<h2>❌ Error</h2><pre>{result.stderr}</pre>")
 
     except Exception as e:
-        return HttpResponse(f"<h2>❌ SceneDetect Exception</h2><pre>{str(e)}</pre>")
+        return HttpResponse(f"<h2>❌ Transcribe Exception</h2><pre>{str(e)}</pre>")
 
 
-def generateCaptions(request):
+def transcribe(request):
     try:
         result = subprocess.run([
-            '/content/env_caption/bin/jupyter', 'nbconvert',
-            '--to', 'notebook',
-            '--execute',
-            '--inplace',
-            '--ExecutePreprocessor.kernel_name=env_caption',  
-            '/content/arabic-video-summarisation/notebooks/03_generateCaptions.ipynb'
+            '/content/env_captions/bin/python',
+            '/content/arabic-video-summarisation/scripts/03_generateCaption.py'
         ], capture_output=True, text=True)
 
         if result.returncode == 0:
-            return HttpResponse("<h2>✅ Caption Generation completed</h2>")
+            base_url = request.build_absolute_uri('/')[:-1]
+            next_url = f"{base_url}/generateCaptions"
+            return HttpResponse("Captions Generated")
         else:
             return HttpResponse(f"<h2>❌ Error</h2><pre>{result.stderr}</pre>")
 
     except Exception as e:
-        return HttpResponse(f"<h2>❌ GenerateCaptions Exception</h2><pre>{str(e)}</pre>")
+        return HttpResponse(f"<h2>❌ Transcribe Exception</h2><pre>{str(e)}</pre>")
