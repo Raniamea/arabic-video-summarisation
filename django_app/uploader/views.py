@@ -99,7 +99,7 @@ def sceneDetect(request):
 def transcribe(request):
     try:
         result = subprocess.run([
-            '/content/env_captions/bin/python',
+            '/content/env_caption/bin/python',
             '/content/arabic-video-summarisation/scripts/03_generateCaption.py'
         ], capture_output=True, text=True)
 
