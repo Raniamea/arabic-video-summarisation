@@ -54,7 +54,6 @@ def upload_video(request):
     })
 
 
-
 def transcribe(request):
     try:
         pm.execute_notebook(
@@ -65,43 +64,3 @@ def transcribe(request):
     except Exception as e:
         return HttpResponse(f"<h2>❌ Error in transcription</h2><pre>{str(e)}</pre>")
 
-def sceneDetect(request):
-    try:
-        pm.execute_notebook(
-            '/content/arabic-video-summarisation/notebooks/02_sceneDetection.ipynb',
-            '/content/arabic-video-summarisation/notebooks/out_sceneDetection.ipynb'
-        )
-        return HttpResponse("<h2>✅ Scene detection notebook completed</h2>")
-    except Exception as e:
-        return HttpResponse(f"<h2>❌ Error in scene detection</h2><pre>{str(e)}</pre>")
-
-def generateCaptions(request):
-    try:
-        pm.execute_notebook(
-            '/content/arabic-video-summarisation/notebooks/02_object_detection.ipynb',
-            '/content/arabic-video-summarisation/notebooks/out_object_detection.ipynb'
-        )
-        return HttpResponse("<h2>✅ Scene detection notebook completed</h2>")
-    except Exception as e:
-        return HttpResponse(f"<h2>❌ Error in scene detection</h2><pre>{str(e)}</pre>")
-
-def validate(request):
-    try:
-        pm.execute_notebook(
-            '/content/arabic-video-summarisation/notebooks/02_object_detection.ipynb',
-            '/content/arabic-video-summarisation/notebooks/out_object_detection.ipynb'
-        )
-        return HttpResponse("<h2>✅ Scene detection notebook completed</h2>")
-    except Exception as e:
-        return HttpResponse(f"<h2>❌ Error in scene detection</h2><pre>{str(e)}</pre>")
-
-
-def summarise(request):
-    try:
-        pm.execute_notebook(
-            '/content/arabic-video-summarisation/notebooks/03_summarize_validate.ipynb',
-            '/content/arabic-video-summarisation/notebooks/out_summarize_validate.ipynb'
-        )
-        return HttpResponse("<h2>✅ Summarization notebook completed</h2>")
-    except Exception as e:
-        return HttpResponse(f"<h2>❌ Error in summarization</h2><pre>{str(e)}</pre>")
