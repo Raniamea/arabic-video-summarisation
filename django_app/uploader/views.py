@@ -68,8 +68,8 @@ def transcribe(request):
 def sceneDetect(request):
     try:
         pm.execute_notebook(
-            '/content/arabic-video-summarisation/notebooks/02_object_detection.ipynb',
-            '/content/arabic-video-summarisation/notebooks/out_object_detection.ipynb'
+            '/content/arabic-video-summarisation/notebooks/02_sceneDetection.ipynb',
+            '/content/arabic-video-summarisation/notebooks/out_sceneDetection.ipynb'
         )
         return HttpResponse("<h2>✅ Scene detection notebook completed</h2>")
     except Exception as e:
