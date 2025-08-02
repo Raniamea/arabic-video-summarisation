@@ -24,8 +24,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('uploader.urls')),
     path('transcribe/', views.transcribe, name='transcribe'),
-    path('scene/', views.scene_detect, name='scene_detect'),
-    path('summarize/', views.summarize, name='summarize'),
+    path('sceneDetect/', views.sceneDetect, name='sceneDetect'),
+    path('generateCaptions/', views.generateCaptions, name='generateCaptions'),
+    path('validate/', views.validate, name='validate'),
+    path('summarise/', views.summarise, name='summarise'),
 ]
 
 
