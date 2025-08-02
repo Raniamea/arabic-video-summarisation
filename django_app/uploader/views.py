@@ -96,7 +96,7 @@ def sceneDetect(request):
         return HttpResponse(f"<h2>❌ Transcribe Exception</h2><pre>{str(e)}</pre>")
 
 
-def transcribe(request):
+def generateCaptions(request):
     try:
         result = subprocess.run([
             '/content/env_caption/bin/python',
