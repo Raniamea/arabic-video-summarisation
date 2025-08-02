@@ -53,14 +53,26 @@ def upload_video(request):
         'file_name': file_name
     })
 
-
 def transcribe(request):
     try:
         pm.execute_notebook(
             '/content/arabic-video-summarisation/notebooks/01_transcribe.ipynb',
             '/content/arabic-video-summarisation/notebooks/out_transcribe.ipynb'
         )
-        return HttpResponse("<h2>✅ Transcription completed</h2>")
+
+        # Get host dynamically from the request object
+        base_url = request.build_absolute_uri('/')[:-1]  # Remove trailing slash
+        scene_detect_url = f"{base_url}/sceneDetect"
+
+        html = f"""
+        <h2>✅ Transcription completed</h2>
+        <p>Next step:</p>
+        <ul>
+            <li><a href="{scene_detect_url}" target="_blank">📸 Run Scene Detection (Backend)</a></li>
+        </ul>
+        """
+        return HttpResponse(html)
+
     except Exception as e:
         return HttpResponse(f"<h2>❌ Error in transcription</h2><pre>{str(e)}</pre>")
 
@@ -71,7 +83,20 @@ def sceneDetect(request):
             '/content/arabic-video-summarisation/notebooks/02_sceneDetect.ipynb',
             '/content/arabic-video-summarisation/notebooks/out_sceneDetect.ipynb'
         )
-        return HttpResponse("<h2>✅ Scene Detection completed</h2>")
+
+        # Build dynamic URL for the next step
+        base_url = request.build_absolute_uri('/')[:-1]
+        generate_captions_url = f"{base_url}/generateCaptions"
+
+        html = f"""
+        <h2>✅ Scene Detection completed</h2>
+        <p>Next step:</p>
+        <ul>
+            <li><a href="{generate_captions_url}" target="_blank">📝 Run Generate Captions (Backend)</a></li>
+        </ul>
+        """
+        return HttpResponse(html)
+
     except Exception as e:
         return HttpResponse(f"<h2>❌ Error in sceneDetection</h2><pre>{str(e)}</pre>")
 
