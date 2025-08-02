@@ -60,7 +60,18 @@ def transcribe(request):
             '/content/arabic-video-summarisation/notebooks/01_transcribe.ipynb',
             '/content/arabic-video-summarisation/notebooks/out_transcribe.ipynb'
         )
-        return HttpResponse("<h2>✅ Transcription notebook completed</h2>")
+        return HttpResponse("<h2>✅ Transcription completed</h2>")
     except Exception as e:
         return HttpResponse(f"<h2>❌ Error in transcription</h2><pre>{str(e)}</pre>")
+
+
+def sceneDetect(request):
+    try:
+        pm.execute_notebook(
+            '/content/arabic-video-summarisation/notebooks/02_sceneDetect.ipynb',
+            '/content/arabic-video-summarisation/notebooks/out_sceneDetect.ipynb'
+        )
+        return HttpResponse("<h2>✅ Scene Detection completed</h2>")
+    except Exception as e:
+        return HttpResponse(f"<h2>❌ Error in sceneDetection</h2><pre>{str(e)}</pre>")
 
