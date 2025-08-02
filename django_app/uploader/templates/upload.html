@@ -19,8 +19,10 @@
         <h4>➡️ Run Processing Notebooks:</h4>
         <ul>
             <li><a href="{% url 'transcribe' %}">🔊 Transcription (Whisper)</a></li>
-            <li><a href="https://colab.research.google.com/github/Raniamea/arabic-video-summarisation/blob/main/notebooks/02_object_detection.ipynb" target="_blank">🎞️ Scene Detection</a></li>
-            <li><a href="https://colab.research.google.com/github/Raniamea/arabic-video-summarisation/blob/main/notebooks/03_validation.ipynb" target="_blank">🧠 Semantic Validation</a></li>
+            <li><a href="{% url 'sceneDetect'%}">🎞️ Scene Detection</a></li>
+            <li><a href="{% url 'generateCaptions'%}"> Generate Visual Captions</a></li>
+            <li><a href="{% url 'validate'%}"> 🧠 Semantic Validation</a></li>
+            <li><a href="{% url 'summarise'%}"> Generate Summary</a></li>
         </ul>
     {% endif %}
 </body>

@@ -65,7 +65,7 @@ def transcribe(request):
     except Exception as e:
         return HttpResponse(f"<h2>❌ Error in transcription</h2><pre>{str(e)}</pre>")
 
-def scene_detect(request):
+def sceneDetect(request):
     try:
         pm.execute_notebook(
             '/content/arabic-video-summarisation/notebooks/02_object_detection.ipynb',
@@ -75,7 +75,28 @@ def scene_detect(request):
     except Exception as e:
         return HttpResponse(f"<h2>❌ Error in scene detection</h2><pre>{str(e)}</pre>")
 
-def summarize(request):
+def generateCaptions(request):
+    try:
+        pm.execute_notebook(
+            '/content/arabic-video-summarisation/notebooks/02_object_detection.ipynb',
+            '/content/arabic-video-summarisation/notebooks/out_object_detection.ipynb'
+        )
+        return HttpResponse("<h2>✅ Scene detection notebook completed</h2>")
+    except Exception as e:
+        return HttpResponse(f"<h2>❌ Error in scene detection</h2><pre>{str(e)}</pre>")
+
+def validate(request):
+    try:
+        pm.execute_notebook(
+            '/content/arabic-video-summarisation/notebooks/02_object_detection.ipynb',
+            '/content/arabic-video-summarisation/notebooks/out_object_detection.ipynb'
+        )
+        return HttpResponse("<h2>✅ Scene detection notebook completed</h2>")
+    except Exception as e:
+        return HttpResponse(f"<h2>❌ Error in scene detection</h2><pre>{str(e)}</pre>")
+
+
+def summarise(request):
     try:
         pm.execute_notebook(
             '/content/arabic-video-summarisation/notebooks/03_summarize_validate.ipynb',
