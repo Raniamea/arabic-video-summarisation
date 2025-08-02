@@ -87,7 +87,7 @@ for i, (start, _) in enumerate(scene_list):
   image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
   # --- Captioning with BLIP-2 ---
-  inputs = caption_processor(images=image, return_tensors="pt").to(device, torch.float16 if device == "cuda" else torch.float32)
+  inputs = caption_processor(images=[image], return_tensors="pt", padding=True).to(device, torch.float16 if device == "cuda" else torch.float32)
   generated_ids = caption_model.generate(**inputs, max_new_tokens=50)
   english_caption = caption_processor.decode(generated_ids[0], skip_special_tokens=True).strip()
 
