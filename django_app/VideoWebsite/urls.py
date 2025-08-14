@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('uploader.urls')),
     path('transcribe/', views.transcribe, name='transcribe'),
     path('sceneDetect/', views.sceneDetect, name='sceneDetect'),
-    #path('generateCaptions/', views.generateCaptions, name='generateCaptions'),
+    path('ArabicPreprocessing/', views.ArabicPreprocessing, name='ArabicPreprocessing'),
     #path('validate/', views.validate, name='validate'),
     #path('summarise/', views.summarise, name='summarise'),
 ]
