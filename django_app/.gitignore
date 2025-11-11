@@ -13,3 +13,4 @@ t5_arabic_summarizer_lora_lite/
 pytorch_model.bin
 t5_arabic_summarizer_lora/
 t5_arabic_summarizer_lora_lite/
+*.tar.gz
