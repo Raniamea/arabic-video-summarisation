@@ -105,7 +105,7 @@ def preprocessing(request):
 
         if result.returncode == 0:
             base_url = request.build_absolute_uri('/')[:-1]
-            next_url = f"{base_url}/validation"
+            next_url = f"{base_url}/validate"
             return HttpResponse(f"""
                 <h2>Preprocessing Complete</h2>
                 <p>Next step:</p>
