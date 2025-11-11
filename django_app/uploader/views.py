@@ -83,32 +83,66 @@ def sceneDetect(request):
 
         if result.returncode == 0:
             base_url = request.build_absolute_uri('/')[:-1]
-            next_url = f"{base_url}/generateCaptions"
+            next_url = f"{base_url}/preprocessing"
             return HttpResponse(f"""
-                <h2>✅ Transcription completed</h2>
+                <h2>Caption Generation Completed</h2>
                 <p>Next step:</p>
-                <ul><li><a href="{next_url}" target="_blank">Generate Captions</a></li></ul>
+                <ul><li><a href="{next_url}" target="_blank">Arabic Preprocessing</a></li></ul>
             """)
         else:
-            return HttpResponse(f"<h2>❌ Error</h2><pre>{result.stderr}</pre>")
+            return HttpResponse(f"<h2>Error</h2><pre>{result.stderr}</pre>")
 
     except Exception as e:
-        return HttpResponse(f"<h2>❌ TCaption Generation  Exception</h2><pre>{str(e)}</pre>")
+        return HttpResponse(f"<h2>Caption Generation  Exception</h2><pre>{str(e)}</pre>")
 
 
-def ArabicPreprocessing(request):
+def preprocessing(request):
     try:
         result = subprocess.run([
             '/content/env_caption/bin/python',
-            '/content/arabic-video-summarisation/scripts/03_ArabicPreprocessing.py'
+            '/content/arabic-video-summarisation/scripts/03_arabicpreprocessing.py'
         ], capture_output=True, text=True)
 
         if result.returncode == 0:
             base_url = request.build_absolute_uri('/')[:-1]
-            next_url = f"{base_url}/ArabicPreprocessing"
-            return HttpResponse("Arabic Preprocessing Complete")
+            next_url = f"{base_url}/validate"
+            return HttpResponse("Preprocessing Complete")
         else:
-            return HttpResponse(f"<h2>❌ Error</h2><pre>{result.stderr}</pre>")
+            return HttpResponse(f"<h2> Error</h2><pre>{result.stderr}</pre>")
 
     except Exception as e:
-        return HttpResponse(f"<h2>❌ Arabic Preprocessing Exception</h2><pre>{str(e)}</pre>")
+        return HttpResponse(f"<h2> Arabic Preprocessing Exception</h2><pre>{str(e)}</pre>")
+
+def validate(request):
+    try:
+        result = subprocess.run([
+            '/content/env_caption/bin/python',
+            '/content/arabic-video-summarisation/scripts/04_validate.py'
+        ], capture_output=True, text=True)
+
+        if result.returncode == 0:
+            base_url = request.build_absolute_uri('/')[:-1]
+            next_url = f"{base_url}/summarise"
+            return HttpResponse("Validation Complete")
+        else:
+            return HttpResponse(f"<h2> Error</h2><pre>{result.stderr}</pre>")
+
+    except Exception as e:
+        return HttpResponse(f"<h2> Validation Exception</h2><pre>{str(e)}</pre>")
+
+def summarise(request):
+    try:
+        result = subprocess.run([
+            '/content/env_caption/bin/python',
+            '/content/arabic-video-summarisation/scripts/05_summarise.py'
+        ], capture_output=True, text=True)
+
+        if result.returncode == 0:
+            base_url = request.build_absolute_uri('/')[:-1]
+            #next_url = f"{base_url}/summarise"
+            return HttpResponse("Summarisation Complete")
+        else:
+            return HttpResponse(f"<h2> Error</h2><pre>{result.stderr}</pre>")
+
+    except Exception as e:
+        return HttpResponse(f"<h2> Summarisation Exception</h2><pre>{str(e)}</pre>")

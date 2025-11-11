@@ -13,12 +13,12 @@
     </form>
 
     {% if uploaded %}
-        <h3>✅ Upload Successful!</h3>
+        <h3> Upload Successful!</h3>
         <p>File: <strong>{{ file_name }}</strong> saved to Google Drive.</p>
 
-        <h4>➡️ Run Processing Notebooks:</h4>
+        <h4>Run Processing Notebooks:</h4>
         <ul>
-            <li><a href="{% url 'transcribe' %}">🔊 Transcription (Whisper)</a></li>
+            <li><a href="{% url 'transcribe' %}"> Transcription (Whisper)</a></li>
         </ul>
     {% endif %}
 </body>
