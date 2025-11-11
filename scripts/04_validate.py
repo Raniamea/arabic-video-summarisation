@@ -425,7 +425,6 @@ for i in range(common_len):
 
     combined_records.append(best_out)
 
-# --- Summary metadata ---
 combined_summary = {
     "records_total": len(combined_records),
     "source_files": {
