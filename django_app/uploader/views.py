@@ -146,28 +146,13 @@ def summarise(request):
         ], capture_output=True, text=True)
 
         if result.returncode != 0:
-            return HttpResponse(f"<h2>Error</h2><pre>{result.stderr}</pre>")
+            return HttpResponse(result.stderr, content_type="text/plain; charset=utf-8")
 
-        # Prefer reading the saved summary file
-        params_path = "/content/drive/MyDrive/ArabicVideoSummariser/params.json"
-        with open(params_path, "r", encoding="utf-8") as f:
-            params = json.load(f)
-
-        video_file = params.get("video_file", "")
-        video_name = os.path.splitext(video_file)[0]
-        summary_path = f"/content/drive/MyDrive/ArabicVideoSummariser/summaries/{video_name}_Summary.txt"
-
-        if os.path.exists(summary_path):
-            with open(summary_path, "r", encoding="utf-8") as sf:
-                summary_text = sf.read().strip()
-        else:
-            # Fallback: whatever the script printed
-            summary_text = result.stdout.strip()
-
-        return render(request, "summary.html", {
-            "video_name": video_name,
-            "summary": summary_text
-        })
+        summary_text = result.stdout.strip()
+        return HttpResponse(f"<pre style='font-family:Arial; line-height:1.6; white-space:pre-wrap; "
+          f"word-wrap:break-word; text-align:right; direction:rtl; "
+          f"max-width:120ch; padding:1rem;'>{summary_text}</pre>",
+          content_type='text/html; charset=utf-8')
 
     except Exception as e:
-        return HttpResponse(f"<h2> Summarisation Exception</h2><pre>{str(e)}</pre>")
+        return HttpResponse(f"Summarisation Exception: {str(e)}", content_type="text/plain; charset=utf-8")
