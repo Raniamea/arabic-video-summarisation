@@ -35,7 +35,7 @@ validated_path   = os.path.join(BASE_PATH, "Validated")
 summaries_path   = os.path.join(BASE_PATH, "summaries")
 
 Validated_File=os.path.join(validated_path, f"{video_name}_Validated.txt")
-Summary_File = os.path.join(summaries_path, f"{video_name}_Summary1.txt")
+Summary_File = os.path.join(summaries_path, f"{video_name}_Summary.txt")
 
 # ============================================================
 # Arabic Summarization

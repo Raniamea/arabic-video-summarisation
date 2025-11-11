@@ -145,12 +145,29 @@ def summarise(request):
             '/content/arabic-video-summarisation/scripts/05_summarise.py'
         ], capture_output=True, text=True)
 
-        if result.returncode == 0:
-            base_url = request.build_absolute_uri('/')[:-1]
-            #next_url = f"{base_url}/summarise"
-            return HttpResponse("Summarisation Complete")
+        if result.returncode != 0:
+            return HttpResponse(f"<h2>Error</h2><pre>{result.stderr}</pre>")
+
+        # Prefer reading the saved summary file
+        params_path = "/content/drive/MyDrive/ArabicVideoSummariser/params.json"
+        with open(params_path, "r", encoding="utf-8") as f:
+            params = json.load(f)
+
+        video_file = params.get("video_file", "")
+        video_name = os.path.splitext(video_file)[0]
+        summary_path = f"/content/drive/MyDrive/ArabicVideoSummariser/summaries/{video_name}_Summary.txt"
+
+        if os.path.exists(summary_path):
+            with open(summary_path, "r", encoding="utf-8") as sf:
+                summary_text = sf.read().strip()
         else:
-            return HttpResponse(f"<h2> Error</h2><pre>{result.stderr}</pre>")
+            # Fallback: whatever the script printed
+            summary_text = result.stdout.strip()
+
+        return render(request, "summary.html", {
+            "video_name": video_name,
+            "summary": summary_text
+        })
 
     except Exception as e:
         return HttpResponse(f"<h2> Summarisation Exception</h2><pre>{str(e)}</pre>")
