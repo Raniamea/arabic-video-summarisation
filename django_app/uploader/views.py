@@ -64,15 +64,15 @@ def transcribe(request):
             base_url = request.build_absolute_uri('/')[:-1]
             next_url = f"{base_url}/sceneDetect"
             return HttpResponse(f"""
-                <h2>✅ Transcription completed</h2>
+                <h2> Transcription completed</h2>
                 <p>Next step:</p>
-                <ul><li><a href="{next_url}" target="_blank">📸 Run Scene Detection</a></li></ul>
+                <ul><li><a href="{next_url}" > Run Scene Detection & Caption Generation</a></li></ul>
             """)
         else:
-            return HttpResponse(f"<h2>❌ Error</h2><pre>{result.stderr}</pre>")
+            return HttpResponse(f"<h2> Error</h2><pre>{result.stderr}</pre>")
 
     except Exception as e:
-        return HttpResponse(f"<h2>❌ Transcribe Exception</h2><pre>{str(e)}</pre>")
+        return HttpResponse(f"<h2> Transcribe Exception</h2><pre>{str(e)}</pre>")
 
 def sceneDetect(request):
     try:
@@ -85,9 +85,9 @@ def sceneDetect(request):
             base_url = request.build_absolute_uri('/')[:-1]
             next_url = f"{base_url}/preprocessing"
             return HttpResponse(f"""
-                <h2>Caption Generation Completed</h2>
+                <h2>Caption Generation Complete</h2>
                 <p>Next step:</p>
-                <ul><li><a href="{next_url}" target="_blank">Arabic Preprocessing</a></li></ul>
+                <ul><li><a href="{next_url}">Arabic Preprocessing</a></li></ul>
             """)
         else:
             return HttpResponse(f"<h2>Error</h2><pre>{result.stderr}</pre>")
@@ -99,14 +99,18 @@ def sceneDetect(request):
 def preprocessing(request):
     try:
         result = subprocess.run([
-            '/content/env_caption/bin/python',
+            '/content/env_preprocessing/bin/python',
             '/content/arabic-video-summarisation/scripts/03_arabicpreprocessing.py'
         ], capture_output=True, text=True)
 
         if result.returncode == 0:
             base_url = request.build_absolute_uri('/')[:-1]
-            next_url = f"{base_url}/validate"
-            return HttpResponse("Preprocessing Complete")
+            next_url = f"{base_url}/validation"
+            return HttpResponse(f"""
+                <h2>Preprocessing Complete</h2>
+                <p>Next step:</p>
+                <ul><li><a href="{next_url}">Validation</a></li></ul>
+            """)
         else:
             return HttpResponse(f"<h2> Error</h2><pre>{result.stderr}</pre>")
 
@@ -116,14 +120,18 @@ def preprocessing(request):
 def validate(request):
     try:
         result = subprocess.run([
-            '/content/env_caption/bin/python',
+            '/content/env_validate/bin/python',
             '/content/arabic-video-summarisation/scripts/04_validate.py'
         ], capture_output=True, text=True)
 
         if result.returncode == 0:
             base_url = request.build_absolute_uri('/')[:-1]
             next_url = f"{base_url}/summarise"
-            return HttpResponse("Validation Complete")
+            return HttpResponse(f"""
+                <h2>Validation Complete</h2>
+                <p>Next step:</p>
+                <ul><li><a href="{next_url}">Summarisation</a></li></ul>
+            """)
         else:
             return HttpResponse(f"<h2> Error</h2><pre>{result.stderr}</pre>")
 
@@ -133,7 +141,7 @@ def validate(request):
 def summarise(request):
     try:
         result = subprocess.run([
-            '/content/env_caption/bin/python',
+            '/content/env_summarise/bin/python',
             '/content/arabic-video-summarisation/scripts/05_summarise.py'
         ], capture_output=True, text=True)
 
