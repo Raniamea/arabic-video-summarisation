@@ -21,6 +21,9 @@ MODEL_PATH = os.path.join(BASE_PATH,"models/AraBART-finetuned-ar_finetuned_20251
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
 model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
 
+
+params_path = os.path.join(BASE_PATH, "params.json")
+
 with open(params_path, "r", encoding="utf-8") as f:
     params = json.load(f)
 
